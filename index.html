@@ -1,28 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ATHR</title>
+
   <style>
     body {
       margin: 0;
-      font-family: Arial;
+      font-family: 'Arial';
       background: #0e0d0b;
       color: #f2eadf;
-      text-align: center;
     }
+
+    .container {
+      padding: 60px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
     h1 {
-      font-size: 40px;
-      margin-top: 100px;
+      font-size: 60px;
+      margin-bottom: 20px;
     }
+
     p {
       color: #caa56b;
+      font-size: 18px;
+      max-width: 500px;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 14px 24px;
+      background: #caa56b;
+      color: black;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .upload-box {
+      margin-top: 60px;
+      border: 1px dashed #444;
+      padding: 40px;
+      text-align: center;
     }
   </style>
 </head>
+
 <body>
 
-<h1>ATHR Website</h1>
-<p>Site is being built...</p>
+<div class="container">
+
+  <h1>ATHR</h1>
+  <p>Upload your café and see the transformation.</p>
+
+  <div class="upload-box">
+    <input type="file" id="imageInput" />
+    <br>
+    <button class="btn" onclick="generate()">Generate Experience</button>
+  </div>
+
+  <div id="result" style="margin-top:40px;"></div>
+
+</div>
+
+<script>
+async function generate() {
+  const file = document.getElementById("imageInput").files[0];
+
+  if (!file) {
+    alert("Upload image first");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch("/api/generate", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+
+  document.getElementById("result").innerHTML =
+    `<img src="${data.image}" style="width:100%; margin-top:20px;" />`;
+}
+</script>
 
 </body>
 </html>
