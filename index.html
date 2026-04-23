@@ -8,721 +8,13 @@
     name="description"
     content="ATHR transforms cafés into emotional, story-driven experiences people feel, remember, and share."
   />
-  <style>
-    :root {
-      --bg: #0a0908;
-      --bg-2: #12100e;
-      --panel: rgba(255,255,255,0.03);
-      --panel-2: rgba(255,255,255,0.05);
-      --text: #f2ece3;
-      --muted: #b7aa99;
-      --line: rgba(255,255,255,0.08);
-      --gold: #c8a36a;
-      --gold-2: #9a7646;
-      --shadow: 0 10px 40px rgba(0,0,0,0.35);
-      --radius: 24px;
-      --radius-sm: 16px;
-      --max: 1240px;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: Inter, Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(200,163,106,0.08), transparent 30%),
-        linear-gradient(180deg, #0b0908 0%, #0a0908 100%);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-    button, input { font: inherit; }
-
-    .container {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
-    }
-
-    .section {
-      padding: 88px 0;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .eyebrow {
-      display: inline-block;
-      color: var(--gold);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-size: 12px;
-      margin-bottom: 16px;
-    }
-
-    h1, h2, h3, h4, p { margin: 0; }
-
-    h1 {
-      font-size: clamp(48px, 9vw, 110px);
-      line-height: 0.94;
-      letter-spacing: -0.05em;
-    }
-
-    h2 {
-      font-size: clamp(32px, 4.5vw, 64px);
-      line-height: 1;
-      letter-spacing: -0.04em;
-      margin-bottom: 16px;
-    }
-
-    h3 {
-      font-size: clamp(22px, 2.2vw, 30px);
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-    }
-
-    p.lead {
-      font-size: clamp(18px, 2.2vw, 24px);
-      line-height: 1.55;
-      color: var(--muted);
-      max-width: 720px;
-    }
-
-    p.copy {
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 28px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 22px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--text);
-      transition: 0.25s ease;
-      cursor: pointer;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.03);
-    }
-
-    .btn.primary {
-      background: linear-gradient(180deg, var(--gold), var(--gold-2));
-      color: #140f08;
-      border: none;
-      box-shadow: 0 8px 20px rgba(200,163,106,0.18);
-    }
-
-    .btn.primary:hover {
-      background: linear-gradient(180deg, #d8b27a, #aa834d);
-    }
-
-    /* NAV */
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(16px);
-      background: rgba(10, 9, 8, 0.7);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .nav-inner {
-      min-height: 74px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-    }
-
-    .brand span {
-      color: var(--gold);
-      font-size: 24px;
-      font-weight: 700;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .nav-links a:hover {
-      color: var(--text);
-    }
-
-    /* HERO */
-    .hero {
-      padding: 72px 0 56px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .hero-left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 620px;
-    }
-
-    .hero-right {
-      position: relative;
-      min-height: 620px;
-      border-radius: 28px;
-      overflow: hidden;
-      background: var(--bg-2);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
-
-    .hero-right img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: saturate(0.96) contrast(1.04);
-    }
-
-    .hero-badge {
-      position: absolute;
-      left: 18px;
-      bottom: 18px;
-      padding: 12px 14px;
-      border-radius: 18px;
-      background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(8px);
-      color: #f5efe7;
-      font-size: 14px;
-      max-width: 280px;
-      line-height: 1.5;
-    }
-
-    /* STAT BAR */
-    .stats {
-      margin-top: 34px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .stat {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 26px;
-      margin-bottom: 8px;
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    /* SECTION HEAD */
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 22px;
-      align-items: end;
-      margin-bottom: 32px;
-    }
-
-    .section-head .copy {
-      max-width: 560px;
-    }
-
-    /* TRANSFORMATIONS GRID */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .card-media {
-      aspect-ratio: 4 / 5;
-      overflow: hidden;
-      background: #15120f;
-    }
-
-    .card-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: 0.5s ease;
-    }
-
-    .card:hover .card-media img {
-      transform: scale(1.03);
-    }
-
-    .card-body {
-      padding: 20px;
-    }
-
-    .card-kicker {
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-size: 11px;
-      margin-bottom: 10px;
-    }
-
-    .card-title {
-      margin-bottom: 12px;
-    }
-
-    .card-desc {
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 15px;
-      margin-bottom: 18px;
-    }
-
-    .mini-meta {
-      display: grid;
-      gap: 12px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .mini-meta strong {
-      display: block;
-      color: #eadcc8;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-
-    .mini-meta span {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    /* BEFORE AFTER */
-    .comparison-wrap {
-      display: grid;
-      gap: 36px;
-    }
-
-    .comparison-block {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .frame {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .frame img {
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      object-fit: cover;
-    }
-
-    .frame-label {
-      padding: 16px 18px 18px;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-size: 12px;
-      letter-spacing: 0.18em;
-    }
-
-    /* SYSTEM */
-    .system {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .system-item {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 22px;
-      min-height: 220px;
-    }
-
-    .system-number {
-      width: 38px;
-      height: 38px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: rgba(200,163,106,0.12);
-      color: var(--gold);
-      font-weight: 700;
-      margin-bottom: 18px;
-    }
-
-    .system-item h3 {
-      margin-bottom: 12px;
-    }
-
-    .system-item p {
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 15px;
-    }
-
-    /* PACKAGES */
-    .packages {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .package {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 26px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .package.featured {
-      border-color: rgba(200,163,106,0.4);
-      box-shadow: 0 10px 45px rgba(200,163,106,0.08);
-    }
-
-    .package-badge {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(200,163,106,0.12);
-      color: var(--gold);
-      font-size: 12px;
-    }
-
-    .package h3 {
-      margin-bottom: 10px;
-    }
-
-    .price {
-      color: var(--gold);
-      font-size: 28px;
-      margin-bottom: 12px;
-      font-weight: 800;
-    }
-
-    .package p {
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 18px;
-    }
-
-    .package ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 22px;
-      display: grid;
-      gap: 12px;
-      color: #e7dbcb;
-      font-size: 15px;
-    }
-
-    .package li::before {
-      content: "—";
-      color: var(--gold);
-      margin-right: 8px;
-    }
-
-    /* FOUNDER */
-    .founder {
-      display: grid;
-      grid-template-columns: 1fr 0.9fr;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .founder-copy {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .founder-copy .copy + .copy {
-      margin-top: 14px;
-    }
-
-    .founder-image {
-      border-radius: 28px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-    }
-
-    .founder-image img {
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      object-fit: cover;
-    }
-
-    /* AI PREVIEW */
-    .ai-panel {
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 22px;
-      align-items: stretch;
-    }
-
-    .ai-box {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: var(--shadow);
-    }
-
-    .upload-area {
-      margin-top: 18px;
-      min-height: 240px;
-      border: 1px dashed rgba(255,255,255,0.16);
-      border-radius: 20px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 22px;
-      color: var(--muted);
-      background: rgba(255,255,255,0.01);
-    }
-
-    .upload-area input {
-      display: block;
-      margin: 0 auto 18px;
-      color: var(--muted);
-    }
-
-    .preview-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .preview-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      overflow: hidden;
-      min-height: 320px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .preview-card .top {
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .preview-card .body {
-      flex: 1;
-      display: grid;
-      place-items: center;
-      padding: 14px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .preview-card .body img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    /* FAQ */
-    .faq {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    .faq-item {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 22px;
-    }
-
-    .faq-item h3 {
-      font-size: 22px;
-      margin-bottom: 12px;
-    }
-
-    .faq-item p {
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* CONTACT */
-    .contact {
-      display: grid;
-      grid-template-columns: 1fr 0.8fr;
-      gap: 22px;
-    }
-
-    .contact-box {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .contact-list {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .contact-list strong {
-      color: var(--text);
-      display: inline-block;
-      min-width: 110px;
-    }
-
-    .footer {
-      padding: 28px 0 60px;
-      color: var(--muted);
-      font-size: 14px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(26px);
-      transition: 0.75s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 1080px) {
-      .hero-grid,
-      .founder,
-      .ai-panel,
-      .contact,
-      .section-head,
-      .cards,
-      .packages,
-      .system,
-      .comparison-block {
-        grid-template-columns: 1fr;
-      }
-
-      .section-head {
-        align-items: start;
-      }
-
-      .hero-left,
-      .hero-right {
-        min-height: auto;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .nav-links {
-        display: none;
-      }
-
-      .hero {
-        padding-top: 42px;
-      }
-
-      .stats,
-      .faq,
-      .preview-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section {
-        padding: 68px 0;
-      }
-
-      h1 {
-        font-size: clamp(42px, 12vw, 72px);
-      }
-
-      .container {
-        width: min(calc(100% - 22px), var(--max));
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <header class="nav">
     <div class="container nav-inner">
       <a href="#" class="brand">ATHR <span>أثر</span></a>
-      <nav class="nav-links">
+      <nav class="nav-links" aria-label="Primary">
         <a href="#transformations">Transformations</a>
         <a href="#before-after">Before / After</a>
         <a href="#system">System</a>
@@ -736,40 +28,53 @@
 
   <main>
     <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-left reveal">
-          <div class="eyebrow">ATHR Experience Studio</div>
-          <h1>From a place<br>to a feeling.</h1>
-          <p class="lead" style="margin-top: 20px;">
-            ATHR transforms cafés into emotional experiences people feel, remember, and share.
-            Not decoration. Not noise. A stronger identity built into the space itself.
-          </p>
+      <div class="container">
+        <div class="hero-shell">
+          <div class="hero-grid">
+            <div class="hero-glow" aria-hidden="true"></div>
+            <div class="hero-left reveal">
+              <div class="eyebrow">ATHR Experience Studio</div>
+              <h1>From a place<br>to a feeling.</h1>
+              <p class="lead" style="margin-top: 20px;">
+                ATHR transforms cafés into emotional experiences people feel, remember, and share.
+                Not decoration. Not noise. A stronger identity built into the space itself.
+              </p>
 
-          <div class="btn-row">
-            <a class="btn primary" href="#contact">Start a Project</a>
-            <a class="btn" href="#transformations">See Transformations</a>
+              <div class="btn-row">
+                <a class="btn primary" href="#contact">Start a Project</a>
+                <a class="btn" href="#transformations">See Transformations</a>
+              </div>
+
+              <p class="hero-caption">Cinematic spatial language for premium hospitality brands.</p>
+
+              <div class="stats">
+                <div class="stat">
+                  <strong>3 layers</strong>
+                  <span>Story, atmosphere, and memory built into one clear concept.</span>
+                </div>
+                <div class="stat">
+                  <strong>1 system</strong>
+                  <span>Poster, mural, story, and interaction working together.</span>
+                </div>
+                <div class="stat">
+                  <strong>Real impact</strong>
+                  <span>Longer stay, stronger identity, and more shareable moments.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-right reveal">
+              <img src="images/cover-collage.jpeg" alt="ATHR collage cover">
+              <div class="hero-badge">
+                Selected concepts and transformations built to turn ordinary seating into remembered experience.
+              </div>
+            </div>
           </div>
-
-          <div class="stats">
-            <div class="stat">
-              <strong>3 layers</strong>
-              <span>Story, atmosphere, and memory built into one clear concept.</span>
-            </div>
-            <div class="stat">
-              <strong>1 system</strong>
-              <span>Poster, mural, story, and interaction working together.</span>
-            </div>
-            <div class="stat">
-              <strong>Real impact</strong>
-              <span>Longer stay, stronger identity, and more shareable moments.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-right reveal">
-          <img src="images/cover-collage.jpeg" alt="ATHR collage cover">
-          <div class="hero-badge">
-            Selected concepts and transformations built to turn ordinary seating into remembered experience.
+          <div class="hero-strip" aria-label="Experience pillars">
+            <span>Atmosphere Engineering</span>
+            <span>Story-Led Surfaces</span>
+            <span>Memory Triggers</span>
+            <span>Shareable Moments</span>
           </div>
         </div>
       </div>
@@ -1065,9 +370,9 @@
             <div class="upload-area">
               <div>
                 <input type="file" id="imageInput" accept="image/*" />
-                <button class="btn primary" onclick="generatePreview()">Generate Preview</button>
+                <button class="btn primary" type="button" onclick="generatePreview()">Generate Preview</button>
                 <p class="copy" style="margin-top: 16px;">
-                  The real AI generation will be connected next. For now, this section is visually ready.
+                  The AI preview uses your uploaded image and returns an ATHR-style concept mockup.
                 </p>
               </div>
             </div>
@@ -1163,7 +468,7 @@
         </div>
       </div>
     </section>
-     </main>
+  </main>
 
   <footer class="footer">
     <div class="container">
@@ -1171,79 +476,6 @@
     </div>
   </footer>
 
-  <script>
-    async function generatePreview() {
-      const input = document.getElementById("imageInput");
-      const before = document.getElementById("beforePreview");
-      const after = document.getElementById("afterPreview");
-
-      if (!input.files || !input.files[0]) {
-        alert("Upload an image first.");
-        return;
-      }
-
-      const file = input.files[0];
-      const localUrl = URL.createObjectURL(file);
-
-      before.innerHTML = `<img src="${localUrl}" alt="Uploaded preview">`;
-      after.innerHTML = "Uploading...";
-
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "athr_unsigned");
-
-        const cloudRes = await fetch(
-          "https://api.cloudinary.com/v1_1/dv7yrzdff/image/upload",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        const cloudData = await cloudRes.json();
-
-        if (!cloudData.secure_url) {
-          console.error(cloudData);
-          after.innerHTML = "Upload failed.";
-          return;
-        }
-
-        const imageUrl = cloudData.secure_url;
-        after.innerHTML = "Generating ATHR preview...";
-
-        const res = await fetch("/api/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ imageUrl }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok || !data.image) {
-          console.error(data);
-          after.innerHTML = "Generation failed.";
-          return;
-        }
-
-        after.innerHTML = `<img src="${data.image}" alt="ATHR generated preview">`;
-      } catch (err) {
-        console.error(err);
-        after.innerHTML = "Something went wrong.";
-      }
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-  </script>
+  <script src="assets/main.js"></script>
 </body>
 </html>
