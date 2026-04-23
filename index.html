@@ -1170,8 +1170,16 @@
       ATHR — Experience Studio. From a place to a feeling.
     </div>
   </footer>
+<script>
+  async function fileToDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
 
- <script>
   async function generatePreview() {
     const input = document.getElementById("imageInput");
     const before = document.getElementById("beforePreview");
@@ -1188,25 +1196,22 @@
     before.innerHTML = `<img src="${localUrl}" alt="Uploaded preview">`;
     after.innerHTML = `Generating ATHR preview...`;
 
-    const formData = new FormData();
-    formData.append("model", "gpt-image-1");
-    formData.append(
-      "prompt",
-      "ATHR style interior transformation for a real cafe space. Keep the original architecture and layout recognizable. Do not redesign the whole place unrealistically. Transform only as a believable premium cafe experience. Add warm premium lighting, subtle mural or wall storytelling, elegant poster integration, emotional atmosphere, photogenic but believable visual identity, suitable for a real hospitality brand. No clutter. No fantasy exaggeration. No major structural changes."
-    );
-    formData.append("image", file);
-
     try {
+      const imageDataUrl = await fileToDataUrl(file);
+
       const res = await fetch("/api/generate", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ imageDataUrl })
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.image) {
         console.error(data);
-        after.innerHTML = "Generation failed. Check Vercel logs.";
+        after.innerHTML = `Generation failed.`;
         return;
       }
 
@@ -1227,5 +1232,6 @@
 
   document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 </script>
+ 
 </body>
 </html>
