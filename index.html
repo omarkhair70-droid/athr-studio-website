@@ -1163,7 +1163,7 @@
         </div>
       </div>
     </section>
-   </main>
+     </main>
 
   <footer class="footer">
     <div class="container">
@@ -1185,8 +1185,8 @@
       const file = input.files[0];
       const localUrl = URL.createObjectURL(file);
 
-      before.innerHTML = `<img src="${localUrl}">`;
-      after.innerHTML = `Uploading...`;
+      before.innerHTML = `<img src="${localUrl}" alt="Uploaded preview">`;
+      after.innerHTML = "Uploading...";
 
       try {
         const formData = new FormData();
@@ -1204,12 +1204,13 @@
         const cloudData = await cloudRes.json();
 
         if (!cloudData.secure_url) {
+          console.error(cloudData);
           after.innerHTML = "Upload failed.";
           return;
         }
 
         const imageUrl = cloudData.secure_url;
-        after.innerHTML = `Generating ATHR preview...`;
+        after.innerHTML = "Generating ATHR preview...";
 
         const res = await fetch("/api/generate", {
           method: "POST",
@@ -1227,12 +1228,22 @@
           return;
         }
 
-        after.innerHTML = `<img src="${data.image}">`;
+        after.innerHTML = `<img src="${data.image}" alt="ATHR generated preview">`;
       } catch (err) {
         console.error(err);
         after.innerHTML = "Something went wrong.";
       }
     }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
   </script>
 </body>
 </html>
