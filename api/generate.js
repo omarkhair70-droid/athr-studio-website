@@ -1,6 +1,14 @@
 export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
   try {
     const { imageUrl } = req.body;
+
+    if (!imageUrl) {
+      return res.status(400).json({ error: "No imageUrl provided" });
+    }
 
     const response = await fetch("https://api.openai.com/v1/images/edits", {
       method: "POST",
@@ -27,11 +35,11 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({
-      image: data.data[0].url
+      image: data?.data?.[0]?.url || data?.data?.[0]?.b64_json || null
     });
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: "Server error" });
   }
 }
