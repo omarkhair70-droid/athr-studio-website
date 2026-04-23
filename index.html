@@ -1170,67 +1170,73 @@
       ATHR — Experience Studio. From a place to a feeling.
     </div>
   </footer>
-<script>
-  async function fileToDataUrl(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+ <script>
+async function generatePreview() {
+  const input = document.getElementById("imageInput");
+  const before = document.getElementById("beforePreview");
+  const after = document.getElementById("afterPreview");
+
+  if (!input.files || !input.files[0]) {
+    alert("Upload an image first.");
+    return;
   }
 
-  async function generatePreview() {
-    const input = document.getElementById("imageInput");
-    const before = document.getElementById("beforePreview");
-    const after = document.getElementById("afterPreview");
+  const file = input.files[0];
+  const localUrl = URL.createObjectURL(file);
 
-    if (!input.files || !input.files[0]) {
-      alert("Upload an image first.");
+  before.innerHTML = `<img src="${localUrl}">`;
+  after.innerHTML = `Uploading...`;
+
+  try {
+    // 1) Upload to Cloudinary
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "athr_unsigned");
+
+    const cloudRes = await fetch(
+      "https://api.cloudinary.com/v1_1/dv7yrzdff/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const cloudData = await cloudRes.json();
+
+    if (!cloudData.secure_url) {
+      after.innerHTML = "Upload failed.";
       return;
     }
 
-    const file = input.files[0];
-    const localUrl = URL.createObjectURL(file);
+    const imageUrl = cloudData.secure_url;
 
-    before.innerHTML = `<img src="${localUrl}" alt="Uploaded preview">`;
     after.innerHTML = `Generating ATHR preview...`;
 
-    try {
-      const imageDataUrl = await fileToDataUrl(file);
-
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ imageDataUrl })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data.image) {
-        console.error(data);
-        after.innerHTML = `Generation failed.`;
-        return;
-      }
-
-      after.innerHTML = `<img src="${data.image}" alt="ATHR generated preview">`;
-    } catch (err) {
-      console.error(err);
-      after.innerHTML = "Something went wrong.";
-    }
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
+    // 2) Send to your API
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ imageUrl }),
     });
-  }, { threshold: 0.12 });
 
-  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    const data = await res.json();
+
+    if (!res.ok || !data.image) {
+      console.error(data);
+      after.innerHTML = "Generation failed.";
+      return;
+    }
+
+    // 3) Show result
+    after.innerHTML = `<img src="${data.image}">`;
+
+  } catch (err) {
+    console.error(err);
+    after.innerHTML = "Something went wrong.";
+  }
+}
 </script>
  
 </body>
