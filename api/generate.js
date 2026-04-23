@@ -8,19 +8,33 @@ export default async function handler(req, res) {
   }
 
   try {
-    const chunks = [];
-    for await (const chunk of req) {
-      chunks.push(chunk);
+    const { imageDataUrl } = req.body || {};
+
+    if (!imageDataUrl) {
+      return res.status(400).json({ error: "No imageDataUrl provided" });
     }
-    const bodyBuffer = Buffer.concat(chunks);
 
     const openaiRes = await fetch("https://api.openai.com/v1/images/edits", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": req.headers["content-type"],
+        "Content-Type": "application/json",
       },
-      body: bodyBuffer,
+      body: JSON.stringify({
+        model: "gpt-image-1",
+        images: [
+          {
+            image_url: imageDataUrl
+          }
+        ],
+        prompt:
+          "ATHR style interior transformation for a real cafe space. Keep the original architecture and layout recognizable. Do not redesign the whole place unrealistically. Transform only as a believable premium cafe experience. Add warm premium lighting, subtle mural or wall storytelling, elegant poster integration, emotional atmosphere, photogenic but believable visual identity, suitable for a real hospitality brand. No clutter. No fantasy exaggeration. No major structural changes.",
+        size: "1536x1024",
+        quality: "medium",
+        output_format: "png",
+        background: "auto",
+        input_fidelity: "high"
+      }),
     });
 
     const data = await openaiRes.json();
