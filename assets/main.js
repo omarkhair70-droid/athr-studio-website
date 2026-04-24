@@ -4,7 +4,7 @@ async function generatePreview() {
   const after = document.getElementById("afterPreview");
   const status = document.getElementById("previewStatus");
 
-  if (!input.files || !input.files[0]) {
+  if (!input || !before || !after || !status || !input.files || !input.files[0]) {
     alert("Upload an image first.");
     return;
   }
@@ -17,12 +17,12 @@ async function generatePreview() {
 
   const showGracefulFallback = () => {
     after.innerHTML = `
-      <div>
-        <p style="margin-bottom:10px;">Live AI generation is temporarily unavailable.</p>
-        <p style="font-size:14px;line-height:1.6;">Your upload was received. Send it on WhatsApp for a curated ATHR concept direction with manual art direction.</p>
+      <div class="fallback-copy">
+        <p>Live preview is temporarily unavailable.</p>
+        <p>Send your photo on WhatsApp and we’ll create a curated ATHR direction manually.</p>
       </div>
     `;
-    status.textContent = "AI unavailable right now. Continue via WhatsApp for curated concept delivery.";
+    status.textContent = "Live preview is temporarily unavailable. Continue via WhatsApp for curated concept delivery.";
   };
 
   try {
@@ -59,8 +59,7 @@ async function generatePreview() {
       return;
     }
 
-    const src = data.image.startsWith("data:") ? data.image : data.image;
-    after.innerHTML = `<img src="${src}" alt="ATHR concept preview output">`;
+    after.innerHTML = `<img src="${data.image}" alt="ATHR concept preview output">`;
     status.textContent = "Concept preview generated. Share your goals on WhatsApp for next-step development.";
   } catch (error) {
     console.error(error);
@@ -72,9 +71,7 @@ window.generatePreview = generatePreview;
 
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-    }
+    if (entry.isIntersecting) entry.target.classList.add("visible");
   });
 }, { threshold: 0.16 });
 
@@ -82,9 +79,17 @@ document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el))
 
 function setupBeforeAfter(slider) {
   const handle = slider.querySelector(".ba-handle");
-  if (!handle) return;
+  const beforeImage = slider.querySelector(".ba-image.before");
+  const afterImage = slider.querySelector(".ba-image.after");
+  if (!handle || !beforeImage || !afterImage) return;
 
   const initial = Number(slider.dataset.initial || 52);
+  const beforePosition = slider.dataset.beforePosition || "50% 50%";
+  const afterPosition = slider.dataset.afterPosition || "50% 50%";
+
+  beforeImage.style.objectPosition = beforePosition;
+  afterImage.style.objectPosition = afterPosition;
+
   let reveal = Number.isFinite(initial) ? Math.max(0, Math.min(100, initial)) : 52;
   let dragging = false;
 
@@ -117,16 +122,12 @@ function setupBeforeAfter(slider) {
   const endDrag = (event) => {
     if (!dragging) return;
     dragging = false;
-    if (slider.hasPointerCapture(event.pointerId)) {
-      slider.releasePointerCapture(event.pointerId);
-    }
+    if (slider.hasPointerCapture(event.pointerId)) slider.releasePointerCapture(event.pointerId);
   };
 
   slider.addEventListener("pointerup", endDrag);
   slider.addEventListener("pointercancel", endDrag);
-  slider.addEventListener("lostpointercapture", () => {
-    dragging = false;
-  });
+  slider.addEventListener("lostpointercapture", () => { dragging = false; });
 
   handle.addEventListener("keydown", (event) => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
@@ -136,6 +137,32 @@ function setupBeforeAfter(slider) {
 }
 
 document.querySelectorAll("[data-before-after]").forEach(setupBeforeAfter);
+
+async function setupReel(videoId, placeholderId) {
+  const video = document.getElementById(videoId);
+  const placeholder = document.getElementById(placeholderId);
+  if (!video || !placeholder) return;
+
+  try {
+    const response = await fetch("assets/athr-reel.mp4", { method: "HEAD" });
+    if (response.ok) {
+      video.style.display = "block";
+      placeholder.style.display = "none";
+      if (videoId === "heroReel") {
+        video.play().catch(() => {});
+      }
+      return;
+    }
+  } catch (error) {
+    console.error("Reel check failed", error);
+  }
+
+  video.style.display = "none";
+  placeholder.style.display = "grid";
+}
+
+setupReel("heroReel", "heroPlaceholder");
+setupReel("futureReel", "futureReelPlaceholder");
 
 const heroShell = document.querySelector(".hero-shell");
 if (heroShell && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
