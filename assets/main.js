@@ -12,8 +12,18 @@ async function generatePreview() {
   const file = input.files[0];
   const localUrl = URL.createObjectURL(file);
   before.innerHTML = `<img src="${localUrl}" alt="Uploaded space preview">`;
-  after.innerHTML = "Preparing concept...";
-  status.textContent = "Uploading your space...";
+  after.innerHTML = "Preparing concept direction...";
+  status.textContent = "Uploading your image securely...";
+
+  const showGracefulFallback = () => {
+    after.innerHTML = `
+      <div>
+        <p style="margin-bottom:10px;">Live AI generation is temporarily unavailable.</p>
+        <p style="font-size:14px;line-height:1.6;">Your upload was received. Send it on WhatsApp for a curated ATHR concept direction with manual art direction.</p>
+      </div>
+    `;
+    status.textContent = "AI unavailable right now. Continue via WhatsApp for curated concept delivery.";
+  };
 
   try {
     const formData = new FormData();
@@ -29,8 +39,7 @@ async function generatePreview() {
 
     if (!cloudData.secure_url) {
       console.error(cloudData);
-      after.innerHTML = "Upload failed.";
-      status.textContent = "Upload failed. Try another image.";
+      showGracefulFallback();
       return;
     }
 
@@ -38,9 +47,7 @@ async function generatePreview() {
 
     const res = await fetch("/api/generate", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ imageUrl: cloudData.secure_url }),
     });
 
@@ -48,17 +55,16 @@ async function generatePreview() {
 
     if (!res.ok || !data.image) {
       console.error(data);
-      after.innerHTML = "Generation failed.";
-      status.textContent = "Generation failed. Please retry.";
+      showGracefulFallback();
       return;
     }
 
-    after.innerHTML = `<img src="${data.image}" alt="ATHR concept preview">`;
-    status.textContent = "Concept ready. Share your goals on WhatsApp to continue.";
-  } catch (err) {
-    console.error(err);
-    after.innerHTML = "Something went wrong.";
-    status.textContent = "A network issue occurred. Please retry.";
+    const src = data.image.startsWith("data:") ? data.image : data.image;
+    after.innerHTML = `<img src="${src}" alt="ATHR concept preview output">`;
+    status.textContent = "Concept preview generated. Share your goals on WhatsApp for next-step development.";
+  } catch (error) {
+    console.error(error);
+    showGracefulFallback();
   }
 }
 
@@ -75,48 +81,57 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
 function setupBeforeAfter(slider) {
-  const afterWrap = slider.querySelector(".ba-after-wrap");
   const handle = slider.querySelector(".ba-handle");
-  if (!afterWrap || !handle) return;
+  if (!handle) return;
 
+  const initial = Number(slider.dataset.initial || 52);
+  let reveal = Number.isFinite(initial) ? Math.max(0, Math.min(100, initial)) : 52;
   let dragging = false;
 
-  const setPosition = (clientX) => {
-    const rect = slider.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const percentage = (x / rect.width) * 100;
-    afterWrap.style.width = `${percentage}%`;
-    handle.style.left = `${percentage}%`;
-    handle.setAttribute("aria-valuenow", `${Math.round(percentage)}`);
+  const setReveal = (value) => {
+    reveal = Math.max(0, Math.min(100, value));
+    slider.style.setProperty("--reveal", `${reveal}%`);
+    handle.style.left = `${reveal}%`;
+    handle.setAttribute("aria-valuenow", `${Math.round(reveal)}`);
   };
 
-  const onPointerMove = (event) => {
-    if (!dragging) return;
-    setPosition(event.clientX);
+  const setFromClientX = (clientX) => {
+    const rect = slider.getBoundingClientRect();
+    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+    setReveal((x / rect.width) * 100);
   };
+
+  setReveal(reveal);
 
   slider.addEventListener("pointerdown", (event) => {
     dragging = true;
     slider.setPointerCapture(event.pointerId);
-    setPosition(event.clientX);
+    setFromClientX(event.clientX);
   });
 
-  slider.addEventListener("pointermove", onPointerMove);
+  slider.addEventListener("pointermove", (event) => {
+    if (!dragging) return;
+    setFromClientX(event.clientX);
+  });
 
-  slider.addEventListener("pointerup", (event) => {
+  const endDrag = (event) => {
+    if (!dragging) return;
     dragging = false;
-    slider.releasePointerCapture(event.pointerId);
+    if (slider.hasPointerCapture(event.pointerId)) {
+      slider.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  slider.addEventListener("pointerup", endDrag);
+  slider.addEventListener("pointercancel", endDrag);
+  slider.addEventListener("lostpointercapture", () => {
+    dragging = false;
   });
 
-  slider.addEventListener("keydown", (event) => {
-    const current = Number(handle.getAttribute("aria-valuenow"));
+  handle.addEventListener("keydown", (event) => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     event.preventDefault();
-    const next = event.key === "ArrowRight" ? current + 2 : current - 2;
-    const bounded = Math.max(0, Math.min(100, next));
-    afterWrap.style.width = `${bounded}%`;
-    handle.style.left = `${bounded}%`;
-    handle.setAttribute("aria-valuenow", `${Math.round(bounded)}`);
+    setReveal(reveal + (event.key === "ArrowRight" ? 2 : -2));
   });
 }
 
@@ -126,9 +141,9 @@ const heroShell = document.querySelector(".hero-shell");
 if (heroShell && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   heroShell.addEventListener("mousemove", (event) => {
     const rect = heroShell.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
-    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 8;
-    heroShell.style.transform = `perspective(1200px) rotateX(${-y * 0.35}deg) rotateY(${x * 0.35}deg)`;
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 6;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 6;
+    heroShell.style.transform = `perspective(1200px) rotateX(${-y * 0.25}deg) rotateY(${x * 0.25}deg)`;
   });
 
   heroShell.addEventListener("mouseleave", () => {
