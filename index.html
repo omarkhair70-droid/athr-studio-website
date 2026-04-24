@@ -3,774 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ATHR — Experience Studio</title>
-  <meta
-    name="description"
-    content="ATHR transforms cafés into emotional, story-driven experiences people feel, remember, and share."
-  />
-  <style>
-    :root {
-      --bg: #0a0908;
-      --bg-2: #12100e;
-      --panel: rgba(255,255,255,0.03);
-      --panel-2: rgba(255,255,255,0.05);
-      --text: #f2ece3;
-      --muted: #b7aa99;
-      --line: rgba(255,255,255,0.08);
-      --gold: #c8a36a;
-      --gold-2: #9a7646;
-      --shadow: 0 10px 40px rgba(0,0,0,0.35);
-      --radius: 24px;
-      --radius-sm: 16px;
-      --max: 1240px;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: Inter, Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(200,163,106,0.08), transparent 30%),
-        linear-gradient(180deg, #0b0908 0%, #0a0908 100%);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-    button, input { font: inherit; }
-
-    .container {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
-    }
-
-    .section {
-      padding: 88px 0;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .eyebrow {
-      display: inline-block;
-      color: var(--gold);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-size: 12px;
-      margin-bottom: 16px;
-    }
-
-    h1, h2, h3, h4, p { margin: 0; }
-
-    h1 {
-      font-size: clamp(48px, 9vw, 110px);
-      line-height: 0.94;
-      letter-spacing: -0.05em;
-    }
-
-    h2 {
-      font-size: clamp(32px, 4.5vw, 64px);
-      line-height: 1;
-      letter-spacing: -0.04em;
-      margin-bottom: 16px;
-    }
-
-    h3 {
-      font-size: clamp(22px, 2.2vw, 30px);
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-    }
-
-    p.lead {
-      font-size: clamp(18px, 2.2vw, 24px);
-      line-height: 1.55;
-      color: var(--muted);
-      max-width: 720px;
-    }
-
-    p.copy {
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 28px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 22px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: transparent;
-      color: var(--text);
-      transition: 0.25s ease;
-      cursor: pointer;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.03);
-    }
-
-    .btn.primary {
-      background: linear-gradient(180deg, var(--gold), var(--gold-2));
-      color: #140f08;
-      border: none;
-      box-shadow: 0 8px 20px rgba(200,163,106,0.18);
-    }
-
-    .btn.primary:hover {
-      background: linear-gradient(180deg, #d8b27a, #aa834d);
-    }
-
-    /* NAV */
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(16px);
-      background: rgba(10, 9, 8, 0.7);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .nav-inner {
-      min-height: 74px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-    }
-
-    .brand span {
-      color: var(--gold);
-      font-size: 24px;
-      font-weight: 700;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .nav-links a:hover {
-      color: var(--text);
-    }
-
-    /* HERO */
-    .hero {
-      padding: 72px 0 56px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .hero-left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 620px;
-    }
-
-    .hero-right {
-      position: relative;
-      min-height: 620px;
-      border-radius: 28px;
-      overflow: hidden;
-      background: var(--bg-2);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
-
-    .hero-right img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: saturate(0.96) contrast(1.04);
-    }
-
-    .hero-badge {
-      position: absolute;
-      left: 18px;
-      bottom: 18px;
-      padding: 12px 14px;
-      border-radius: 18px;
-      background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(8px);
-      color: #f5efe7;
-      font-size: 14px;
-      max-width: 280px;
-      line-height: 1.5;
-    }
-
-    /* STAT BAR */
-    .stats {
-      margin-top: 34px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .stat {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 26px;
-      margin-bottom: 8px;
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    /* SECTION HEAD */
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 22px;
-      align-items: end;
-      margin-bottom: 32px;
-    }
-
-    .section-head .copy {
-      max-width: 560px;
-    }
-
-    /* TRANSFORMATIONS GRID */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .card-media {
-      aspect-ratio: 4 / 5;
-      overflow: hidden;
-      background: #15120f;
-    }
-
-    .card-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: 0.5s ease;
-    }
-
-    .card:hover .card-media img {
-      transform: scale(1.03);
-    }
-
-    .card-body {
-      padding: 20px;
-    }
-
-    .card-kicker {
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-size: 11px;
-      margin-bottom: 10px;
-    }
-
-    .card-title {
-      margin-bottom: 12px;
-    }
-
-    .card-desc {
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 15px;
-      margin-bottom: 18px;
-    }
-
-    .mini-meta {
-      display: grid;
-      gap: 12px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .mini-meta strong {
-      display: block;
-      color: #eadcc8;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-
-    .mini-meta span {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    /* BEFORE AFTER */
-    .comparison-wrap {
-      display: grid;
-      gap: 36px;
-    }
-
-    .comparison-block {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 22px;
-      align-items: start;
-    }
-
-    .frame {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .frame img {
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      object-fit: cover;
-    }
-
-    .frame-label {
-      padding: 16px 18px 18px;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-size: 12px;
-      letter-spacing: 0.18em;
-    }
-
-    /* SYSTEM */
-    .system {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .system-item {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 22px;
-      min-height: 220px;
-    }
-
-    .system-number {
-      width: 38px;
-      height: 38px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: rgba(200,163,106,0.12);
-      color: var(--gold);
-      font-weight: 700;
-      margin-bottom: 18px;
-    }
-
-    .system-item h3 {
-      margin-bottom: 12px;
-    }
-
-    .system-item p {
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 15px;
-    }
-
-    /* PACKAGES */
-    .packages {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .package {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 26px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .package.featured {
-      border-color: rgba(200,163,106,0.4);
-      box-shadow: 0 10px 45px rgba(200,163,106,0.08);
-    }
-
-    .package-badge {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(200,163,106,0.12);
-      color: var(--gold);
-      font-size: 12px;
-    }
-
-    .package h3 {
-      margin-bottom: 10px;
-    }
-
-    .price {
-      color: var(--gold);
-      font-size: 28px;
-      margin-bottom: 12px;
-      font-weight: 800;
-    }
-
-    .package p {
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 18px;
-    }
-
-    .package ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 22px;
-      display: grid;
-      gap: 12px;
-      color: #e7dbcb;
-      font-size: 15px;
-    }
-
-    .package li::before {
-      content: "—";
-      color: var(--gold);
-      margin-right: 8px;
-    }
-
-    /* FOUNDER */
-    .founder {
-      display: grid;
-      grid-template-columns: 1fr 0.9fr;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .founder-copy {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .founder-copy .copy + .copy {
-      margin-top: 14px;
-    }
-
-    .founder-image {
-      border-radius: 28px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-    }
-
-    .founder-image img {
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      object-fit: cover;
-    }
-
-    /* AI PREVIEW */
-    .ai-panel {
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 22px;
-      align-items: stretch;
-    }
-
-    .ai-box {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: var(--shadow);
-    }
-
-    .upload-area {
-      margin-top: 18px;
-      min-height: 240px;
-      border: 1px dashed rgba(255,255,255,0.16);
-      border-radius: 20px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 22px;
-      color: var(--muted);
-      background: rgba(255,255,255,0.01);
-    }
-
-    .upload-area input {
-      display: block;
-      margin: 0 auto 18px;
-      color: var(--muted);
-    }
-
-    .preview-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .preview-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      overflow: hidden;
-      min-height: 320px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .preview-card .top {
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .preview-card .body {
-      flex: 1;
-      display: grid;
-      place-items: center;
-      padding: 14px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .preview-card .body img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    /* FAQ */
-    .faq {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    .faq-item {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 22px;
-    }
-
-    .faq-item h3 {
-      font-size: 22px;
-      margin-bottom: 12px;
-    }
-
-    .faq-item p {
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* CONTACT */
-    .contact {
-      display: grid;
-      grid-template-columns: 1fr 0.8fr;
-      gap: 22px;
-    }
-
-    .contact-box {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .contact-list {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .contact-list strong {
-      color: var(--text);
-      display: inline-block;
-      min-width: 110px;
-    }
-
-    .footer {
-      padding: 28px 0 60px;
-      color: var(--muted);
-      font-size: 14px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(26px);
-      transition: 0.75s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 1080px) {
-      .hero-grid,
-      .founder,
-      .ai-panel,
-      .contact,
-      .section-head,
-      .cards,
-      .packages,
-      .system,
-      .comparison-block {
-        grid-template-columns: 1fr;
-      }
-
-      .section-head {
-        align-items: start;
-      }
-
-      .hero-left,
-      .hero-right {
-        min-height: auto;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .nav-links {
-        display: none;
-      }
-
-      .hero {
-        padding-top: 42px;
-      }
-
-      .stats,
-      .faq,
-      .preview-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section {
-        padding: 68px 0;
-      }
-
-      h1 {
-        font-size: clamp(42px, 12vw, 72px);
-      }
-
-      .container {
-        width: min(calc(100% - 22px), var(--max));
-      }
-    }
-  </style>
+  <title>ATHR — Emotional Spatial Identity Studio</title>
+  <meta name="description" content="ATHR designs emotional spatial identities for cafés and hospitality spaces through story, atmosphere, interaction, and memory-driven design." />
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <header class="nav">
     <div class="container nav-inner">
       <a href="#" class="brand">ATHR <span>أثر</span></a>
-      <nav class="nav-links">
+      <nav class="nav-links" aria-label="Primary navigation">
         <a href="#transformations">Transformations</a>
         <a href="#before-after">Before / After</a>
-        <a href="#system">System</a>
-        <a href="#packages">Packages</a>
-        <a href="#founder">Founder</a>
-        <a href="#ai-preview">AI Preview</a>
+        <a href="#what-athr-adds">What ATHR Adds</a>
+        <a href="#how-it-works">How it Works</a>
+        <a href="#starting-points">Starting Points</a>
+        <a href="#concept-preview">Concept Preview</a>
         <a href="#contact">Contact</a>
       </nav>
+      <a class="btn nav-cta" href="https://wa.me/201151891310?text=Hello%20ATHR%2C%20I%20want%20a%20concept%20for%20my%20space." target="_blank" rel="noopener noreferrer">Send Your Café Photos</a>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-left reveal">
-          <div class="eyebrow">ATHR Experience Studio</div>
-          <h1>From a place<br>to a feeling.</h1>
-          <p class="lead" style="margin-top: 20px;">
-            ATHR transforms cafés into emotional experiences people feel, remember, and share.
-            Not decoration. Not noise. A stronger identity built into the space itself.
-          </p>
+    <section class="hero section-first">
+      <div class="container">
+        <div class="hero-shell reveal">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="eyebrow">ATHR Experience Studio</div>
+              <h1>Most cafés look good.<br />ATHR makes them unforgettable.</h1>
+              <p class="lead">We design emotional spatial identities for cafés, restaurants, and hospitality spaces — through story-led walls, cinematic lighting, interactive moments, and memory-driven atmosphere.</p>
+              <div class="btn-row">
+                <a class="btn primary" href="https://wa.me/201151891310?text=Hello%20ATHR%2C%20I%20want%20a%20concept%20for%20my%20space." target="_blank" rel="noopener noreferrer">Send Your Café Photos</a>
+                <a class="btn" href="#transformations">See Transformations</a>
+              </div>
+              <div class="hero-metrics" aria-label="ATHR impact highlights">
+                <div class="metric"><strong>Memory</strong><span>Spaces guests remember long after leaving.</span></div>
+                <div class="metric"><strong>Stay Time</strong><span>Atmosphere that invites people to pause and stay.</span></div>
+                <div class="metric"><strong>Shareability</strong><span>Photo-worthy moments designed into the space.</span></div>
+              </div>
+            </div>
 
-          <div class="btn-row">
-            <a class="btn primary" href="#contact">Start a Project</a>
-            <a class="btn" href="#transformations">See Transformations</a>
+            <div class="hero-visual" aria-label="Hero media area for ATHR reel">
+              <video id="heroReel" class="hero-video" muted loop playsinline poster="images/cover-collage.jpeg">
+                <source src="assets/athr-reel.mp4" type="video/mp4" />
+              </video>
+              <div class="hero-video-placeholder" id="heroPlaceholder">
+                <span>Premium reel placeholder</span>
+                <p>ATHR visual reel coming soon.</p>
+              </div>
+              <div class="hero-note">A cinematic direction layer designed to turn ordinary seating into emotional identity.</div>
+            </div>
           </div>
-
-          <div class="stats">
-            <div class="stat">
-              <strong>3 layers</strong>
-              <span>Story, atmosphere, and memory built into one clear concept.</span>
-            </div>
-            <div class="stat">
-              <strong>1 system</strong>
-              <span>Poster, mural, story, and interaction working together.</span>
-            </div>
-            <div class="stat">
-              <strong>Real impact</strong>
-              <span>Longer stay, stronger identity, and more shareable moments.</span>
-            </div>
+          <div class="hero-strip" aria-label="ATHR signature pillars">
+            <span>Story-Led Surfaces</span>
+            <span>Cinematic Lighting</span>
+            <span>Interactive Moments</span>
+            <span>Memory-Driven Atmosphere</span>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="hero-right reveal">
-          <img src="images/cover-collage.jpeg" alt="ATHR collage cover">
-          <div class="hero-badge">
-            Selected concepts and transformations built to turn ordinary seating into remembered experience.
-          </div>
+    <section class="section" id="why-athr">
+      <div class="container why-shell reveal">
+        <div>
+          <div class="eyebrow">Why this matters</div>
+          <h2>A place can look clean and still feel forgettable.</h2>
+        </div>
+        <div class="why-grid">
+          <article><h3>Emotional Identity</h3><p class="copy">ATHR is not decoration. It is a spatial identity system built to be felt, not just seen.</p></article>
+          <article><h3>Commercial Lift</h3><p class="copy">We increase perceived value, memory anchor points, and social sharing through strategic interventions.</p></article>
+          <article><h3>Scalable Strategy</h3><p class="copy">Start with one high-impact zone, then scale across walls, ceiling, and interaction layers.</p></article>
         </div>
       </div>
     </section>
@@ -779,86 +83,24 @@
       <div class="container">
         <div class="section-head reveal">
           <div>
-            <div class="eyebrow">Selected Transformations</div>
-            <h2>Concepts that make people stop, feel, and remember.</h2>
+            <div class="eyebrow">Transformations</div>
+            <h2>Editorial case studies with premium spatial rhythm.</h2>
           </div>
-          <p class="copy">
-            A curated selection of ATHR transformations showing how a seat, wall, or corner can shift
-            from background detail into a reason to stay.
-          </p>
+          <p class="copy">Each concept reframes one part of the space into a signature memory anchor without forcing a full renovation.</p>
         </div>
 
-        <div class="cards">
-          <article class="card reveal">
-            <div class="card-media">
-              <img src="images/laroche-after.jpeg" alt="La Roche after">
-            </div>
-            <div class="card-body">
-              <div class="card-kicker">Case Study 01</div>
-              <h3 class="card-title">La Roche — Window to the Sky</h3>
-              <p class="card-desc">
-                A blank dining wall turned into a slower emotional pause using sky illusion,
-                sculpted cloud form, and story-driven atmosphere.
-              </p>
-              <div class="mini-meta">
-                <div>
-                  <strong>What changed</strong>
-                  <span>A quiet wall became a memory anchor.</span>
-                </div>
-                <div>
-                  <strong>Why it matters</strong>
-                  <span>Guests don’t just sit there. They notice it, photograph it, and remember it.</span>
-                </div>
-              </div>
-            </div>
+        <div class="transform-grid">
+          <article class="transform-card reveal transform-featured">
+            <div class="transform-media"><img src="images/laroche-after.jpeg" alt="La Roche transformed wall experience" /></div>
+            <div class="transform-body"><div class="card-kicker">La Roche</div><h3>Window to the Sky</h3><p class="card-desc">A neutral dining wall transformed into contemplative atmosphere with layered light narrative.</p></div>
           </article>
-
-          <article class="card reveal">
-            <div class="card-media">
-              <img src="images/boulevard-after.jpeg" alt="Boulevard after">
-            </div>
-            <div class="card-body">
-              <div class="card-kicker">Case Study 02</div>
-              <h3 class="card-title">Boulevard — Storyframe Corner</h3>
-              <p class="card-desc">
-                A pass-through edge was reframed with visual narrative, warm contrast,
-                and a corner composition that gives the space a stronger signature.
-              </p>
-              <div class="mini-meta">
-                <div>
-                  <strong>What changed</strong>
-                  <span>The eye now stops, reads, and feels the seat differently.</span>
-                </div>
-                <div>
-                  <strong>Why it matters</strong>
-                  <span>It upgrades the identity of the space without redesigning everything.</span>
-                </div>
-              </div>
-            </div>
+          <article class="transform-card reveal">
+            <div class="transform-media"><img src="images/boulevard-after.jpeg" alt="Boulevard transformed corner" /></div>
+            <div class="transform-body"><div class="card-kicker">Boulevard</div><h3>Dialogue Corner</h3><p class="card-desc">A pass-through edge turned into a strong visual conversation point guests naturally notice.</p></div>
           </article>
-
-          <article class="card reveal">
-            <div class="card-media">
-              <img src="images/cavello-after.jpeg" alt="Cavello after">
-            </div>
-            <div class="card-body">
-              <div class="card-kicker">Case Study 03</div>
-              <h3 class="card-title">Cavello — Layered Emotional Wall</h3>
-              <p class="card-desc">
-                A clean existing space was pushed into a warmer emotional identity through halo light,
-                linework, framed imagery, and subtle spatial storytelling.
-              </p>
-              <div class="mini-meta">
-                <div>
-                  <strong>What changed</strong>
-                  <span>The wall stopped being neutral and started carrying mood.</span>
-                </div>
-                <div>
-                  <strong>Why it matters</strong>
-                  <span>The place gains a visual memory without losing its original calm feel.</span>
-                </div>
-              </div>
-            </div>
+          <article class="transform-card reveal">
+            <div class="transform-media"><img src="images/cavello-after.jpeg" alt="Cavello layered emotional wall" /></div>
+            <div class="transform-body"><div class="card-kicker">Cavello</div><h3>Layered Emotional Wall</h3><p class="card-desc">A refined wall direction balancing warmth, symbolic detail, and spatial calm.</p></div>
           </article>
         </div>
       </div>
@@ -869,46 +111,63 @@
         <div class="section-head reveal">
           <div>
             <div class="eyebrow">Before / After</div>
-            <h2>Not a concept board. A visible shift.</h2>
+            <h2>Interactive comparisons with stable geometry.</h2>
           </div>
-          <p class="copy">
-            Clean comparisons showing the difference clearly — before the emotional layer, and after it.
-          </p>
+          <p class="copy">One shared slider system across all projects for smooth touch/drag behavior and consistent visual alignment.</p>
         </div>
 
-        <div class="comparison-wrap">
-          <div class="comparison-block reveal">
-            <div class="frame">
-              <img src="images/laroche-before.jpeg" alt="La Roche before">
-              <div class="frame-label">La Roche — Before</div>
+        <div class="ba-grid">
+          <article class="ba-card reveal case-laroche">
+            <div class="ba-head"><h3>La Roche — Window to the Sky</h3><span>Before / ATHR Direction</span></div>
+            <div class="ba-slider" data-before-after data-initial="54">
+              <img src="images/laroche-before.jpeg" alt="La Roche before" class="ba-image before" />
+              <img src="images/laroche-after.jpeg" alt="La Roche after" class="ba-image after" />
+              <div class="ba-handle" role="slider" aria-label="Reveal transformed image" aria-valuemin="0" aria-valuemax="100" aria-valuenow="54" tabindex="0"></div>
+              <div class="ba-label before">Before</div>
+              <div class="ba-label after">After</div>
             </div>
-            <div class="frame">
-              <img src="images/laroche-after.jpeg" alt="La Roche after">
-              <div class="frame-label">La Roche — After</div>
-            </div>
-          </div>
+            <p class="ba-note">Before: visually clean but emotionally neutral. After: story, light, and atmosphere create a memory anchor.</p>
+          </article>
 
-          <div class="comparison-block reveal">
-            <div class="frame">
-              <img src="images/boulevard-before.jpeg" alt="Boulevard before">
-              <div class="frame-label">Boulevard — Before</div>
+          <article class="ba-card reveal case-boulevard">
+            <div class="ba-head"><h3>Boulevard — Dialogue Corner</h3><span>Before / ATHR Direction</span></div>
+            <div class="ba-slider" data-before-after data-initial="50">
+              <img src="images/boulevard-before.jpeg" alt="Boulevard before" class="ba-image before" />
+              <img src="images/boulevard-after.jpeg" alt="Boulevard after" class="ba-image after" />
+              <div class="ba-handle" role="slider" aria-label="Reveal transformed image" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0"></div>
+              <div class="ba-label before">Before</div>
+              <div class="ba-label after">After</div>
             </div>
-            <div class="frame">
-              <img src="images/boulevard-after.jpeg" alt="Boulevard after">
-              <div class="frame-label">Boulevard — After</div>
-            </div>
-          </div>
+            <p class="ba-note">Before: visually clean but emotionally neutral. After: story, light, and atmosphere create a memory anchor.</p>
+          </article>
 
-          <div class="comparison-block reveal">
-            <div class="frame">
-              <img src="images/cavello-before.jpeg" alt="Cavello before">
-              <div class="frame-label">Cavello — Before</div>
+          <article class="ba-card reveal case-cavello">
+            <div class="ba-head"><h3>Cavello — Layered Emotional Wall</h3><span>Before / ATHR Direction</span></div>
+            <div class="ba-slider" data-before-after data-initial="49">
+              <img src="images/cavello-before.jpeg" alt="Cavello before" class="ba-image before" />
+              <img src="images/cavello-after.jpeg" alt="Cavello after" class="ba-image after" />
+              <div class="ba-handle" role="slider" aria-label="Reveal transformed image" aria-valuemin="0" aria-valuemax="100" aria-valuenow="49" tabindex="0"></div>
+              <div class="ba-label before">Before</div>
+              <div class="ba-label after">After</div>
             </div>
-            <div class="frame">
-              <img src="images/cavello-after.jpeg" alt="Cavello after">
-              <div class="frame-label">Cavello — After</div>
-            </div>
-          </div>
+            <p class="ba-note">Before: visually clean but emotionally neutral. After: story, light, and atmosphere create a memory anchor.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="what-athr-adds">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="eyebrow">What ATHR Adds</div><h2>Spatial features engineered for memory and atmosphere.</h2></div>
+        </div>
+        <div class="adds-grid">
+          <article class="adds-card reveal"><h3>Living Ceiling</h3><p class="copy">Responsive ceiling light systems that make guests look up, record, and remember.</p></article>
+          <article class="adds-card reveal"><h3>Dialogue Walls</h3><p class="copy">Walls that visually respond to each other through story, light, and composition.</p></article>
+          <article class="adds-card reveal"><h3>Spotlight Story</h3><p class="copy">Directed lighting that guides attention to posters, murals, and emotional anchors.</p></article>
+          <article class="adds-card reveal"><h3>Projection Layer</h3><p class="copy">Subtle projection mapping for motion, story, and atmosphere without looking cheap.</p></article>
+          <article class="adds-card reveal"><h3>Signature Corner</h3><p class="copy">A compact transformation zone designed to become the most photographed part of the café.</p></article>
+          <article class="adds-card reveal"><h3>ATHR System</h3><p class="copy">Poster + Mural + Story + Interaction working as one experience.</p></article>
         </div>
       </div>
     </section>
@@ -916,334 +175,128 @@
     <section class="section" id="system">
       <div class="container">
         <div class="section-head reveal">
-          <div>
-            <div class="eyebrow">The ATHR System</div>
-            <h2>A simple system. A stronger experience.</h2>
-          </div>
-          <p class="copy">
-            Every ATHR concept is built from a clear structure that turns a place into something people feel.
-          </p>
+          <div><div class="eyebrow">ATHR System</div><h2>A proprietary methodology that turns décor into identity.</h2></div>
         </div>
-
-        <div class="system">
-          <div class="system-item reveal">
-            <div class="system-number">1</div>
-            <h3>Poster</h3>
-            <p>
-              A visual anchor that introduces the core feeling of the concept and gives the seat its emotional center.
-            </p>
-          </div>
-          <div class="system-item reveal">
-            <div class="system-number">2</div>
-            <h3>Mural</h3>
-            <p>
-              The visual extension around it — adding atmosphere, context, and spatial identity instead of flat decoration.
-            </p>
-          </div>
-          <div class="system-item reveal">
-            <div class="system-number">3</div>
-            <h3>Story</h3>
-            <p>
-              A few words, cues, or symbolic elements that shift the wall from visual object into remembered moment.
-            </p>
-          </div>
-          <div class="system-item reveal">
-            <div class="system-number">4</div>
-            <h3>Interaction</h3>
-            <p>
-              A subtle invitation to engage: scan, notice, react, or experience the place more deeply than before.
-            </p>
-          </div>
+        <div class="system-grid">
+          <article class="system-panel reveal"><div class="system-number">01</div><h3>Poster</h3><p>The emotional thesis and first visual anchor of the concept.</p></article>
+          <article class="system-panel reveal"><div class="system-number">02</div><h3>Mural</h3><p>The surrounding language that extends feeling into architecture.</p></article>
+          <article class="system-panel reveal"><div class="system-number">03</div><h3>Story</h3><p>Narrative cues that make the moment meaningful and memorable.</p></article>
+          <article class="system-panel reveal"><div class="system-number">04</div><h3>Interaction</h3><p>Subtle behavioral triggers that invite noticing, sharing, and recall.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="packages">
+    <section class="section" id="owners-choose">
       <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <div class="eyebrow">Packages</div>
-            <h2>Start with one seat. Build a stronger identity.</h2>
-          </div>
-          <p class="copy">
-            Different entry points depending on how much of the space you want to transform.
-          </p>
+        <div class="section-head reveal"><div><div class="eyebrow">Why owners choose ATHR</div><h2>Built for business impact, not visual noise.</h2></div></div>
+        <ul class="owners-list reveal">
+          <li>Creates photo-worthy moments</li>
+          <li>Increases perceived value of the place</li>
+          <li>Encourages guests to stay longer</li>
+          <li>Gives the café a signature identity</li>
+          <li>Does not require full renovation</li>
+          <li>Can start small and scale later</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-head reveal"><div><div class="eyebrow">How it works</div><h2>Clear, premium process from photo to execution.</h2></div></div>
+        <div class="process-grid">
+          <article class="process-step reveal"><span>1</span><h3>Send photos</h3><p class="copy">Share your current space and business intent.</p></article>
+          <article class="process-step reveal"><span>2</span><h3>Opportunity mapping</h3><p class="copy">We identify the strongest emotional opportunity.</p></article>
+          <article class="process-step reveal"><span>3</span><h3>Concept direction</h3><p class="copy">We create the visual and atmosphere direction.</p></article>
+          <article class="process-step reveal"><span>4</span><h3>System development</h3><p class="copy">Wall, ceiling, story, lighting, and interaction layers are refined.</p></article>
+          <article class="process-step reveal"><span>5</span><h3>Installation plan</h3><p class="copy">Execution guidance to bring the concept into reality.</p></article>
         </div>
+      </div>
+    </section>
 
-        <div class="packages">
-          <div class="package reveal">
-            <h3>Corner</h3>
-            <div class="price">8k – 12k</div>
-            <p>A compact emotional corner concept designed to prove the value fast.</p>
-            <ul>
-              <li>One focused concept direction</li>
-              <li>Poster + atmosphere layer</li>
-              <li>Fast visual transformation</li>
-              <li>Best for testing impact</li>
-            </ul>
-            <a class="btn" href="#contact">Request this</a>
-          </div>
+    <section class="section" id="starting-points">
+      <div class="container">
+        <div class="section-head reveal"><div><div class="eyebrow">Packages / Starting Points</div><h2>Premium entry points based on scope, not cheap pricing.</h2></div></div>
+        <div class="package-grid package-grid-four">
+          <article class="package-card reveal"><h3>Corner Signature</h3><p class="copy">One focused zone with poster/mural/story/lighting direction.</p></article>
+          <article class="package-card reveal featured"><h3>Wall Experience</h3><p class="copy">Full emotional wall direction with layered story and lighting.</p></article>
+          <article class="package-card reveal"><h3>Living Ceiling Concept</h3><p class="copy">Ceiling-based interactive atmosphere concept for high recall.</p></article>
+          <article class="package-card reveal"><h3>Full ATHR Experience</h3><p class="copy">Complete direction for walls, ceiling, interaction, lighting, story, and installation plan.</p></article>
+        </div>
+        <p class="starting-cta reveal">Not sure where to start? <a href="https://wa.me/201151891310?text=Hello%20ATHR%2C%20I%20want%20a%20concept%20for%20my%20space." target="_blank" rel="noopener noreferrer">Send your café photos.</a></p>
+      </div>
+    </section>
 
-          <div class="package featured reveal">
-            <div class="package-badge">Most Requested</div>
-            <h3>Wall</h3>
-            <div class="price">15k – 30k</div>
-            <p>A stronger signature zone that shifts how the place feels without rebuilding everything.</p>
-            <ul>
-              <li>Main visual identity feature</li>
-              <li>Mural + story composition</li>
-              <li>Better photo potential</li>
-              <li>Premium seat value</li>
-            </ul>
-            <a class="btn primary" href="#contact">Request this</a>
-          </div>
+    <section class="section" id="watch-memory">
+      <div class="container">
+        <div class="section-head reveal"><div><div class="eyebrow">Reel</div><h2>Watch a place become a memory.</h2></div></div>
+        <div class="reel-shell reveal">
+          <video id="futureReel" class="reel-video" controls playsinline>
+            <source src="assets/athr-reel.mp4" type="video/mp4" />
+          </video>
+          <div id="reelPlaceholder" class="reel-placeholder">ATHR reel coming soon.</div>
+        </div>
+      </div>
+    </section>
 
-          <div class="package reveal">
-            <h3>Experience</h3>
-            <div class="price">40k+</div>
-            <p>A layered zone or multi-point concept for spaces that want a full emotional signature.</p>
-            <ul>
-              <li>Expanded concept system</li>
-              <li>Multiple moments in one space</li>
-              <li>Light / interaction ready</li>
-              <li>Higher memory impact</li>
-            </ul>
-            <a class="btn" href="#contact">Request this</a>
+    <section class="section" id="concept-preview">
+      <div class="container concept-shell reveal">
+        <div>
+          <div class="eyebrow">Concept Preview</div>
+          <h2>Upload one photo of your space.</h2>
+          <p class="copy">ATHR will generate a first visual direction — not as a final design, but as a starting point for a curated concept.</p>
+          <div class="upload-panel">
+            <input type="file" id="imageInput" accept="image/*" />
+            <button class="btn primary" type="button" onclick="generatePreview()">Generate Concept Preview</button>
+            <p id="previewStatus" class="status-text">Ready when you are.</p>
           </div>
+        </div>
+        <div class="preview-grid">
+          <div class="preview-card"><div class="top">Your Space</div><div class="body" id="beforePreview">Upload an image to begin.</div></div>
+          <div class="preview-card"><div class="top">ATHR Concept Direction</div><div class="body" id="afterPreview">Your concept preview appears here.</div></div>
         </div>
       </div>
     </section>
 
     <section class="section" id="founder">
-      <div class="container founder">
+      <div class="container founder-shell">
+        <div class="founder-image reveal"><img src="images/founder.jpeg" alt="Omar Khair, Founder / Creative Director" /></div>
         <div class="founder-copy reveal">
-          <div class="eyebrow">The Mind Behind ATHR</div>
-          <h2>ATHR is not decoration.</h2>
-          <p class="copy">
-            It’s a way of thinking about space.
-          </p>
-          <p class="copy">
-            Built by Omar Khair — a creative mind blending vision, aesthetics, and system design
-            to turn ordinary cafés into experiences people feel.
-          </p>
-          <p class="copy">
-            “I don’t design for how it looks. I design for what people remember.”
-          </p>
-          <p class="copy">
-            Every project starts with one question: what stays with someone after they leave?
-          </p>
-          <p class="copy">
-            From there, every detail becomes intentional — not to make noise, but to create a moment worth sharing.
-          </p>
-        </div>
-
-        <div class="founder-image reveal">
-          <img src="images/founder.jpeg" alt="Omar Khair">
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="ai-preview">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <div class="eyebrow">AI Preview</div>
-            <h2>Upload your café. Preview it in ATHR style.</h2>
-          </div>
-          <p class="copy">
-            This is the feature that turns curiosity into conversation. Upload a photo, preview a transformation, then continue on WhatsApp.
-          </p>
-        </div>
-
-        <div class="ai-panel">
-          <div class="ai-box reveal">
-            <h3 style="margin-bottom: 12px;">Try the concept preview</h3>
-            <p class="copy">
-              Upload one photo of your café, bar, or restaurant and preview how ATHR could reshape the emotional identity of the space.
-            </p>
-
-            <div class="upload-area">
-              <div>
-                <input type="file" id="imageInput" accept="image/*" />
-                <button class="btn primary" onclick="generatePreview()">Generate Preview</button>
-                <p class="copy" style="margin-top: 16px;">
-                  The real AI generation will be connected next. For now, this section is visually ready.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="ai-box reveal">
-            <h3 style="margin-bottom: 12px;">Preview Output</h3>
-            <p class="copy">
-              One side shows the uploaded image. The other side becomes the generated ATHR preview once AI is connected.
-            </p>
-
-            <div class="preview-grid">
-              <div class="preview-card">
-                <div class="top">Uploaded Image</div>
-                <div class="body" id="beforePreview">No image uploaded yet.</div>
-              </div>
-              <div class="preview-card">
-                <div class="top">ATHR Preview</div>
-                <div class="body" id="afterPreview">AI output will appear here.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <div class="eyebrow">Honest Answers</div>
-            <h2>Clear answers. No fake promises.</h2>
-          </div>
-        </div>
-
-        <div class="faq">
-          <div class="faq-item reveal">
-            <h3>Is this just décor?</h3>
-            <p>No. ATHR is experience design. The point is not to fill a wall, but to change how the place is felt.</p>
-          </div>
-
-          <div class="faq-item reveal">
-            <h3>Does the whole place need renovation?</h3>
-            <p>No. Most ATHR concepts are built to work with the existing space and improve it strategically.</p>
-          </div>
-
-          <div class="faq-item reveal">
-            <h3>Can we start small?</h3>
-            <p>Yes. A single wall or corner can be enough to prove the idea and create a strong signature moment.</p>
-          </div>
-
-          <div class="faq-item reveal">
-            <h3>Will the result feel realistic?</h3>
-            <p>That’s the point. ATHR works best when the transformation feels believable, premium, and grounded in the actual space.</p>
-          </div>
+          <div class="eyebrow">Founder / Creative Director</div>
+          <h2>Omar Khair</h2>
+          <p class="copy">ATHR was built from one belief: a space should not only look good — it should leave something behind.</p>
+          <p class="copy">Every ATHR project starts with a question: What should guests feel in the first ten seconds, and what should stay with them after they leave?</p>
         </div>
       </div>
     </section>
 
     <section class="section" id="contact">
-      <div class="container contact">
-        <div class="contact-box reveal">
-          <div class="eyebrow">Start a Project</div>
-          <h2>Let’s create something people feel.</h2>
-          <p class="copy" style="margin-bottom: 22px;">
-            If you run a café, restaurant, or bar and want a stronger identity people actually remember, send your space and let’s shape the right concept for it.
-          </p>
-
-          <div class="btn-row">
-            <a
-              class="btn primary"
-              href="https://wa.me/201151891310?text=Hey%20ATHR,%20I%20want%20a%20concept%20for%20my%20space."
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Chat on WhatsApp
-            </a>
-            <a class="btn" href="https://instagram.com/omarkhair0" target="_blank" rel="noopener noreferrer">
-              View Instagram
-            </a>
-          </div>
+      <div class="container contact-shell reveal">
+        <div>
+          <div class="eyebrow">Start Your Project</div>
+          <h2>Send your café photos.<br/>We’ll show you where ATHR can leave a mark.</h2>
+          <p class="copy">For cafés, restaurants, and hospitality spaces that want a stronger identity people feel, photograph, and remember.</p>
         </div>
-
-        <div class="contact-box reveal">
-          <div class="eyebrow">Studio Info</div>
-          <div class="contact-list">
-            <div><strong>Studio:</strong> ATHR Experience Studio</div>
-            <div><strong>Founder:</strong> Omar Khair</div>
-            <div><strong>Email:</strong> omar.khair70@gmail.com</div>
-            <div><strong>Instagram:</strong> @omarkhair0</div>
-            <div><strong>Focus:</strong> Café and hospitality experience design</div>
-          </div>
+        <div class="btn-row">
+          <a class="btn primary" href="https://wa.me/201151891310?text=Hello%20ATHR%2C%20I%20want%20a%20concept%20for%20my%20space." target="_blank" rel="noopener noreferrer">Send on WhatsApp</a>
+          <a class="btn" href="https://www.instagram.com/athr.0.0?igsh=MTZzM2YxZmN2NzQ4OQ==" target="_blank" rel="noopener noreferrer">View Instagram</a>
+          <a class="btn" href="https://www.facebook.com/share/1JKWEqswho/" target="_blank" rel="noopener noreferrer">View Facebook</a>
         </div>
       </div>
     </section>
-     </main>
+  </main>
 
   <footer class="footer">
-    <div class="container">
-      ATHR — Experience Studio. From a place to a feeling.
+    <div class="container footer-grid">
+      <div>
+        <strong>ATHR — Experience Studio</strong>
+      </div>
+      <a href="mailto:asrkhair9@gmail.com">Email: asrkhair9@gmail.com</a>
+      <a href="https://wa.me/201151891310?text=Hello%20ATHR%2C%20I%20want%20a%20concept%20for%20my%20space." target="_blank" rel="noopener noreferrer">WhatsApp: 01151891310</a>
+      <a href="https://www.instagram.com/athr.0.0?igsh=MTZzM2YxZmN2NzQ4OQ==" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="https://www.facebook.com/share/1JKWEqswho/" target="_blank" rel="noopener noreferrer">Facebook</a>
     </div>
   </footer>
 
-  <script>
-    async function generatePreview() {
-      const input = document.getElementById("imageInput");
-      const before = document.getElementById("beforePreview");
-      const after = document.getElementById("afterPreview");
-
-      if (!input.files || !input.files[0]) {
-        alert("Upload an image first.");
-        return;
-      }
-
-      const file = input.files[0];
-      const localUrl = URL.createObjectURL(file);
-
-      before.innerHTML = `<img src="${localUrl}" alt="Uploaded preview">`;
-      after.innerHTML = "Uploading...";
-
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "athr_unsigned");
-
-        const cloudRes = await fetch(
-          "https://api.cloudinary.com/v1_1/dv7yrzdff/image/upload",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        const cloudData = await cloudRes.json();
-
-        if (!cloudData.secure_url) {
-          console.error(cloudData);
-          after.innerHTML = "Upload failed.";
-          return;
-        }
-
-        const imageUrl = cloudData.secure_url;
-        after.innerHTML = "Generating ATHR preview...";
-
-        const res = await fetch("/api/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ imageUrl }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok || !data.image) {
-          console.error(data);
-          after.innerHTML = "Generation failed.";
-          return;
-        }
-
-        after.innerHTML = `<img src="${data.image}" alt="ATHR generated preview">`;
-      } catch (err) {
-        console.error(err);
-        after.innerHTML = "Something went wrong.";
-      }
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-  </script>
+  <script src="assets/main.js"></script>
 </body>
 </html>
