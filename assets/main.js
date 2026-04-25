@@ -215,7 +215,6 @@ function setupReel(videoId, placeholderId) {
   }
 }
 
-setupReel("heroReel", "heroPlaceholder");
 setupReel("futureReel");
 
 function cleanupConceptSection() {

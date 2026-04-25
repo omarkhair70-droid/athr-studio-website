@@ -101,10 +101,7 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
 .hero-copy { display: flex; flex-direction: column; justify-content: center; min-height: 620px; }
 .hero-media { position: relative; min-height: 620px; display: flex; flex-direction: column; gap: 14px; }
 .hero-media-frame { flex: 1; border: 1px solid rgba(255,255,255,0.15); border-radius: 22px; overflow: hidden; position: relative; background: #12100e; }
-.hero-reel { width: 100%; height: 100%; object-fit: cover; display: none; }
-.hero-placeholder { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 10px; padding: 22px; color: #e4d3bd; background: radial-gradient(circle at 80% 20%, rgba(200,163,106,0.2), transparent 40%), #14110f; }
-.hero-placeholder strong { font-size: 22px; }
-.hero-placeholder span { color: var(--muted); max-width: 360px; }
+.hero-media-frame img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9) contrast(1.08); }
 .hero-note { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; background: rgba(0,0,0,0.4); font-size: 14px; color: #e8dccd; line-height: 1.6; }
 
 .section-head { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 34px; }
