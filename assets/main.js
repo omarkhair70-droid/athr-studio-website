@@ -198,17 +198,13 @@ function setupReel(videoId, placeholderId) {
 
   const showFallback = () => {
     const wrap = video.closest(".reel-video-wrap");
-    if (placeholder) {
-      video.style.display = "none";
-      placeholder.style.display = "grid";
+    if (wrap) {
+      wrap.classList.add("is-hidden");
       return;
     }
 
-    if (wrap) {
-      wrap.classList.add("is-hidden");
-    } else {
-      video.classList.add("is-hidden");
-    }
+    video.classList.add("is-hidden");
+    if (placeholder) placeholder.classList.add("is-hidden");
   };
 
   if (video.readyState >= 2) {

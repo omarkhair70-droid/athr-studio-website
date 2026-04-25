@@ -278,8 +278,8 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
 .ba-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; pointer-events: none; user-select: none; background:#14110f; }
 .ba-image.before { filter: brightness(1.05) contrast(1.06); }
 .ba-image.after { filter: brightness(1.08) contrast(1.1) saturate(1.05) sepia(0.08); }
-.ba-image.after { clip-path: inset(0 calc(100% - var(--reveal)) 0 0); will-change: clip-path; transform-origin:left center; transition: transform 420ms ease, filter 420ms ease, box-shadow 420ms ease; }
-.ba-slider:hover .ba-image.after { transform: scale(1.02); filter: brightness(1.1) contrast(1.12) saturate(1.08) sepia(0.1); }
+.ba-image.after { clip-path: inset(0 calc(100% - var(--reveal)) 0 0); will-change: clip-path; transition: filter 420ms ease, box-shadow 420ms ease; }
+.ba-slider:hover .ba-image.after { filter: brightness(1.1) contrast(1.12) saturate(1.08) sepia(0.1); }
 .ba-slider:hover::after { content:""; position:absolute; inset:0; pointer-events:none; box-shadow: inset 0 0 80px rgba(200,163,106,0.12); }
 .ba-handle { position: absolute; left: var(--reveal); top: 0; transform: translateX(-50%); width: 42px; height: 100%; transition: left 120ms ease-out; }
 .ba-handle::before { content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.8); background: rgba(8,8,7,0.65); box-shadow: 0 0 0 8px rgba(0,0,0,0.2); }
