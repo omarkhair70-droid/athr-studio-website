@@ -87,7 +87,7 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
 .section-head .copy { max-width: 520px; }
 
 .reel-transformation { background: linear-gradient(180deg, rgba(10, 9, 8, 0.94), rgba(40, 27, 18, 0.45)); }
-.reel-canvas { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; align-items: stretch; }
+.reel-canvas { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: stretch; }
 .reel-video-wrap {
   position: relative;
   border: 1px solid var(--line);
@@ -125,6 +125,7 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
   text-transform: uppercase;
 }
 .reel-images-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; min-height: 460px; }
+.concepts-grid { margin-top: 8px; }
 .reel-image-main,
 .reel-image-sub {
   margin: 0;
