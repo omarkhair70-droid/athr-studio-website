@@ -31,7 +31,7 @@ button, input { font: inherit; }
 h1, h2, h3, p { margin: 0; }
 
 .container { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
-.section { padding: 92px 0; border-top: 1px solid rgba(255, 255, 255, 0.06); position: relative; }
+.section { padding: 88px 0; border-top: 1px solid rgba(255, 255, 255, 0.06); position: relative; }
 .section::before { content:""; position:absolute; left:50%; top:-1px; width:min(760px,92%); height:1px; transform:translateX(-50%); background:linear-gradient(90deg, transparent, rgba(200,163,106,0.45), transparent); }
 .section-first { border-top: 0; }
 
@@ -93,15 +93,14 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
   border: 1px solid var(--line);
   border-radius: 24px;
   overflow: hidden;
-  min-height: 460px;
+  aspect-ratio: 16 / 9;
   box-shadow: var(--shadow);
   background: #12100e;
 }
 .future-reel {
   width: 100%;
   height: 100%;
-  min-height: 460px;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   display: block;
   background: radial-gradient(circle at center, rgba(255,255,255,0.06), rgba(0,0,0,0.72));
@@ -124,7 +123,14 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
-.reel-images-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; min-height: 460px; }
+.reel-images-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-areas:
+    "main top"
+    "main bottom";
+  gap: 14px;
+}
 .concepts-grid { margin-top: 8px; }
 .reel-image-main,
 .reel-image-sub {
@@ -135,7 +141,9 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
   background: radial-gradient(circle at 50% 20%, rgba(255,255,255,0.08), rgba(20,17,15,0.95));
   box-shadow: 0 14px 32px rgba(0,0,0,0.35);
 }
-.reel-image-main { grid-row: 1 / span 2; }
+.reel-image-main { grid-area: main; aspect-ratio: 4 / 5; }
+.reel-image-sub:nth-of-type(2) { grid-area: top; aspect-ratio: 4 / 5; }
+.reel-image-sub:nth-of-type(3) { grid-area: bottom; aspect-ratio: 4 / 5; }
 .reel-image-main img,
 .reel-image-sub img {
   width: 100%;
@@ -146,6 +154,8 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
   filter: brightness(1.03) contrast(1.06);
   background: radial-gradient(circle at center, rgba(255,255,255,0.06), rgba(18,15,13,0.96));
 }
+.is-hidden { display: none !important; }
+
 .reel-image-main:hover img,
 .reel-image-sub:hover img {
   transform: scale(1.02);
@@ -231,7 +241,7 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
   .reveal { opacity: 1; transform: none; }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1024px) {
   .nav-links { display: none; }
   .hero-grid,
   .transform-grid,
@@ -248,15 +258,11 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
   .transform-card.featured .transform-media { aspect-ratio: 4 / 5; }
   .preview-grid { grid-template-columns: 1fr; }
   .reel-canvas { grid-template-columns: 1fr; }
-  .reel-video-wrap { min-height: 320px; }
-  .future-reel { min-height: 320px; }
-  .reel-images-grid { min-height: auto; grid-template-columns: 1fr; grid-template-rows: auto; }
-  .reel-image-main { grid-row: auto; min-height: 280px; }
-  .reel-image-sub { min-height: 200px; }
+  .reel-images-grid { grid-template-columns: 1fr 1fr; grid-template-areas: "main top" "main bottom"; }
   .nav-cta { margin-left: auto; }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   .container { width: min(calc(100% - 24px), var(--max)); }
   .section { padding: 72px 0; }
   .nav-inner { min-height: 68px; }
@@ -264,4 +270,6 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
   .hero { padding-top: 28px; }
   .ba-slider { height: min(74vw, 380px); }
   .ba-head { flex-direction: column; align-items: flex-start; }
+  .reel-images-grid { grid-template-columns: 1fr; grid-template-areas: "main" "top" "bottom"; }
+  .reel-image-main, .reel-image-sub:nth-of-type(2), .reel-image-sub:nth-of-type(3) { aspect-ratio: 4 / 5; }
 }

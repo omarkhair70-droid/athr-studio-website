@@ -80,6 +80,10 @@ document.querySelectorAll("img").forEach((img, index) => {
   img.decoding = "async";
   if (img.complete) markMediaReady(img);
   img.addEventListener("load", () => markMediaReady(img));
+  img.addEventListener("error", () => {
+    const mediaCard = img.closest("figure");
+    if (mediaCard) mediaCard.classList.add("is-hidden");
+  });
 });
 
 document.querySelectorAll("video").forEach((video) => {
@@ -169,8 +173,18 @@ function setupReel(videoId, placeholderId) {
   };
 
   const showFallback = () => {
-    video.style.display = placeholder ? "none" : "block";
-    if (placeholder) placeholder.style.display = "grid";
+    const wrap = video.closest(".reel-video-wrap");
+    if (placeholder) {
+      video.style.display = "none";
+      placeholder.style.display = "grid";
+      return;
+    }
+
+    if (wrap) {
+      wrap.classList.add("is-hidden");
+    } else {
+      video.classList.add("is-hidden");
+    }
   };
 
   if (video.readyState >= 2) {
@@ -183,6 +197,20 @@ function setupReel(videoId, placeholderId) {
 
 setupReel("heroReel", "heroPlaceholder");
 setupReel("futureReel");
+
+function cleanupConceptSection() {
+  const concepts = document.querySelector("#direction-concepts .reel-images-grid");
+  if (!concepts) return;
+
+  const visibleCards = [...concepts.children].filter((el) => !el.classList.contains("is-hidden"));
+  if (visibleCards.length === 0) {
+    const section = document.getElementById("direction-concepts");
+    if (section) section.classList.add("is-hidden");
+  }
+}
+
+window.setTimeout(cleanupConceptSection, 600);
+
 
 const heroShell = document.querySelector(".hero-shell");
 if (heroShell && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
