@@ -275,7 +275,7 @@ h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12; letter-spacing: -0.
 .ba-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
 .ba-head span { color: var(--muted); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
 .ba-slider { --reveal: 52%; position: relative; height: min(60vw, 520px); cursor: ew-resize; touch-action: none; background: #13100e; }
-.ba-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center center; pointer-events: none; user-select: none; background:#14110f; }
+.ba-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; pointer-events: none; user-select: none; background:#14110f; }
 .ba-image.before { filter: brightness(1.05) contrast(1.06); }
 .ba-image.after { filter: brightness(1.08) contrast(1.1) saturate(1.05) sepia(0.08); }
 .ba-image.after { clip-path: inset(0 calc(100% - var(--reveal)) 0 0); will-change: clip-path; transform-origin:left center; transition: transform 420ms ease, filter 420ms ease, box-shadow 420ms ease; }
