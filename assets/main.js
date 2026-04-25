@@ -1,12 +1,10 @@
-const WHATSAPP_LINK = "https://wa.me/201151891310?text=Hello%20ATHR%2C%20I%20want%20a%20concept%20for%20my%20space.";
-
 async function generatePreview() {
   const input = document.getElementById("imageInput");
   const before = document.getElementById("beforePreview");
   const after = document.getElementById("afterPreview");
   const status = document.getElementById("previewStatus");
 
-  if (!input.files || !input.files[0]) {
+  if (!input || !before || !after || !status || !input.files || !input.files[0]) {
     alert("Upload an image first.");
     return;
   }
@@ -19,12 +17,12 @@ async function generatePreview() {
 
   const showGracefulFallback = () => {
     after.innerHTML = `
-      <div class="preview-fallback">
+      <div class="fallback-copy">
         <p>Live preview is temporarily unavailable.</p>
         <p>Send your photo on WhatsApp and we’ll create a curated ATHR direction manually.</p>
       </div>
     `;
-    status.innerHTML = `Live preview is temporarily unavailable. <a href="${WHATSAPP_LINK}" target="_blank" rel="noopener noreferrer">Continue on WhatsApp</a>.`;
+    status.textContent = "Live preview is temporarily unavailable. Continue via WhatsApp for curated concept delivery.";
   };
 
   try {
@@ -61,12 +59,8 @@ async function generatePreview() {
       return;
     }
 
-    const src = data.image.startsWith("http") || data.image.startsWith("data:")
-      ? data.image
-      : `data:image/png;base64,${data.image}`;
-
-    after.innerHTML = `<img src="${src}" alt="ATHR concept preview output">`;
-    status.textContent = "Concept preview generated. Send your goals and dimensions on WhatsApp for next steps.";
+    after.innerHTML = `<img src="${data.image}" alt="ATHR concept preview output">`;
+    status.textContent = "Concept preview generated. Share your goals on WhatsApp for next-step development.";
   } catch (error) {
     console.error(error);
     showGracefulFallback();
@@ -75,11 +69,27 @@ async function generatePreview() {
 
 window.generatePreview = generatePreview;
 
+
+function markMediaReady(node) {
+  if (!node) return;
+  node.classList.add("media-loaded");
+}
+
+document.querySelectorAll("img").forEach((img, index) => {
+  img.loading = index < 2 ? "eager" : "lazy";
+  img.decoding = "async";
+  if (img.complete) markMediaReady(img);
+  img.addEventListener("load", () => markMediaReady(img));
+});
+
+document.querySelectorAll("video").forEach((video) => {
+  video.preload = video.id === "heroReel" ? "metadata" : video.preload;
+  video.addEventListener("loadeddata", () => markMediaReady(video));
+});
+
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-    }
+    if (entry.isIntersecting) entry.target.classList.add("visible");
   });
 }, { threshold: 0.16 });
 
@@ -87,9 +97,17 @@ document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el))
 
 function setupBeforeAfter(slider) {
   const handle = slider.querySelector(".ba-handle");
-  if (!handle) return;
+  const beforeImage = slider.querySelector(".ba-image.before");
+  const afterImage = slider.querySelector(".ba-image.after");
+  if (!handle || !beforeImage || !afterImage) return;
 
   const initial = Number(slider.dataset.initial || 52);
+  const beforePosition = slider.dataset.beforePosition || "50% 50%";
+  const afterPosition = slider.dataset.afterPosition || "50% 50%";
+
+  beforeImage.style.objectPosition = beforePosition;
+  afterImage.style.objectPosition = afterPosition;
+
   let reveal = Number.isFinite(initial) ? Math.max(0, Math.min(100, initial)) : 52;
   let dragging = false;
 
@@ -122,16 +140,12 @@ function setupBeforeAfter(slider) {
   const endDrag = (event) => {
     if (!dragging) return;
     dragging = false;
-    if (slider.hasPointerCapture(event.pointerId)) {
-      slider.releasePointerCapture(event.pointerId);
-    }
+    if (slider.hasPointerCapture(event.pointerId)) slider.releasePointerCapture(event.pointerId);
   };
 
   slider.addEventListener("pointerup", endDrag);
   slider.addEventListener("pointercancel", endDrag);
-  slider.addEventListener("lostpointercapture", () => {
-    dragging = false;
-  });
+  slider.addEventListener("lostpointercapture", () => { dragging = false; });
 
   handle.addEventListener("keydown", (event) => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
@@ -141,6 +155,31 @@ function setupBeforeAfter(slider) {
 }
 
 document.querySelectorAll("[data-before-after]").forEach(setupBeforeAfter);
+
+async function setupReel(videoId, placeholderId) {
+  const video = document.getElementById(videoId);
+  const placeholder = document.getElementById(placeholderId);
+  if (!video || !placeholder) return;
+
+  try {
+    const response = await fetch("assets/athr-reel.mp4", { method: "HEAD" });
+    if (response.ok) {
+      video.style.display = "block";
+      placeholder.style.display = "none";
+      markMediaReady(video);
+      video.play().catch(() => {});
+      return;
+    }
+  } catch (error) {
+    console.error("Reel check failed", error);
+  }
+
+  video.style.display = "none";
+  placeholder.style.display = "grid";
+}
+
+setupReel("heroReel", "heroPlaceholder");
+setupReel("futureReel", "futureReelPlaceholder");
 
 const heroShell = document.querySelector(".hero-shell");
 if (heroShell && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -155,28 +194,3 @@ if (heroShell && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
     heroShell.style.transform = "perspective(1200px) rotateX(0deg) rotateY(0deg)";
   });
 }
-
-function setupVideoPlaceholder(videoId, placeholderId) {
-  const video = document.getElementById(videoId);
-  const placeholder = document.getElementById(placeholderId);
-  if (!video || !placeholder) return;
-
-  const hidePlaceholder = () => {
-    placeholder.style.display = "none";
-  };
-
-  const showPlaceholder = () => {
-    placeholder.style.display = "grid";
-  };
-
-  video.addEventListener("loadeddata", hidePlaceholder);
-  video.addEventListener("canplay", hidePlaceholder);
-  video.addEventListener("error", showPlaceholder);
-
-  if (!video.currentSrc) {
-    showPlaceholder();
-  }
-}
-
-setupVideoPlaceholder("heroReel", "heroPlaceholder");
-setupVideoPlaceholder("futureReel", "reelPlaceholder");
