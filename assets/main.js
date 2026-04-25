@@ -99,6 +99,30 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
+const storyStage = document.getElementById("storyStage");
+if (storyStage) {
+  const lineOne = storyStage.querySelector(".line-1");
+  const lineTwo = storyStage.querySelector(".line-2");
+
+  const updateStoryProgress = () => {
+    const rect = storyStage.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || 1;
+    const start = viewportHeight * 0.9;
+    const end = viewportHeight * 0.2;
+    const progress = (start - rect.top) / (start - end);
+    const bounded = Math.max(0, Math.min(1, progress));
+
+    storyStage.style.setProperty("--story-progress", bounded.toFixed(3));
+
+    if (lineOne) lineOne.classList.toggle("visible", bounded > 0.22);
+    if (lineTwo) lineTwo.classList.toggle("visible", bounded > 0.62);
+  };
+
+  updateStoryProgress();
+  window.addEventListener("scroll", updateStoryProgress, { passive: true });
+  window.addEventListener("resize", updateStoryProgress);
+}
+
 function setupBeforeAfter(slider) {
   const handle = slider.querySelector(".ba-handle");
   const beforeImage = slider.querySelector(".ba-image.before");
@@ -210,6 +234,32 @@ function cleanupConceptSection() {
 }
 
 window.setTimeout(cleanupConceptSection, 600);
+
+if (window.matchMedia("(min-width: 1025px)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const cursorLight = document.createElement("div");
+  cursorLight.className = "cursor-light";
+  document.body.appendChild(cursorLight);
+
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let currentX = targetX;
+  let currentY = targetY;
+
+  const animateLight = () => {
+    currentX += (targetX - currentX) * 0.12;
+    currentY += (targetY - currentY) * 0.12;
+    cursorLight.style.left = `${currentX}px`;
+    cursorLight.style.top = `${currentY}px`;
+    requestAnimationFrame(animateLight);
+  };
+
+  document.body.classList.add("cursor-active");
+  window.addEventListener("mousemove", (event) => {
+    targetX = event.clientX;
+    targetY = event.clientY;
+  });
+  animateLight();
+}
 
 
 const heroShell = document.querySelector(".hero-shell");
