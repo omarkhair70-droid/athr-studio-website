@@ -156,30 +156,33 @@ function setupBeforeAfter(slider) {
 
 document.querySelectorAll("[data-before-after]").forEach(setupBeforeAfter);
 
-async function setupReel(videoId, placeholderId) {
+function setupReel(videoId, placeholderId) {
   const video = document.getElementById(videoId);
-  const placeholder = document.getElementById(placeholderId);
-  if (!video || !placeholder) return;
+  const placeholder = placeholderId ? document.getElementById(placeholderId) : null;
+  if (!video) return;
 
-  try {
-    const response = await fetch("assets/athr-reel.mp4", { method: "HEAD" });
-    if (response.ok) {
-      video.style.display = "block";
-      placeholder.style.display = "none";
-      markMediaReady(video);
-      video.play().catch(() => {});
-      return;
-    }
-  } catch (error) {
-    console.error("Reel check failed", error);
+  const revealVideo = () => {
+    video.style.display = "block";
+    markMediaReady(video);
+    if (placeholder) placeholder.style.display = "none";
+    video.play().catch(() => {});
+  };
+
+  const showFallback = () => {
+    video.style.display = placeholder ? "none" : "block";
+    if (placeholder) placeholder.style.display = "grid";
+  };
+
+  if (video.readyState >= 2) {
+    revealVideo();
+  } else {
+    video.addEventListener("loadeddata", revealVideo, { once: true });
+    video.addEventListener("error", showFallback, { once: true });
   }
-
-  video.style.display = "none";
-  placeholder.style.display = "grid";
 }
 
 setupReel("heroReel", "heroPlaceholder");
-setupReel("futureReel", "futureReelPlaceholder");
+setupReel("futureReel");
 
 const heroShell = document.querySelector(".hero-shell");
 if (heroShell && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
